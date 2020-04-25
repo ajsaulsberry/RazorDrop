@@ -26,6 +26,7 @@ namespace RazorDrop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
             services.AddDbContext<RazorDropContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("RazorDropContext")));
