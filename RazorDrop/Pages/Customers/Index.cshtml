@@ -1,0 +1,44 @@
+﻿@page
+@model RazorDrop.Pages.Customers.IndexModel
+@{
+  ViewData["Title"] = "Customers";
+}
+
+<div class="row">
+  <div class="col-sm-12">
+    <h1>Customers</h1>
+
+    <p>
+      <a asp-page="./Create">Create a new customer</a>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <table class="table">
+      <tr>
+        <th>Customer ID</th>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Region</th>
+      </tr>
+      @foreach (var item in Model.CustomersDisplayList)
+      {
+        <tr>
+          <td>
+            @Html.DisplayFor(modelItem => item.CustomerId)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.CustomerName)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.CountryName)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.RegionName)
+          </td>
+        </tr>
+      }
+    </table>
+  </div>
+</div>
