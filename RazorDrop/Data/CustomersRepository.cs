@@ -17,9 +17,13 @@ namespace RazorDrop.Data
     public class CustomersRepository : ICustomersRepository
     {
         private readonly RazorDropContext _context;
-        public CustomersRepository(RazorDropContext context)
+        private readonly ICountriesRepository _countriesRepo;
+        private readonly IRegionsRepository _regionsRepo;
+        public CustomersRepository(RazorDropContext context, ICountriesRepository countriesRepo, IRegionsRepository regionsRepo)
         {
             _context = context;
+            _countriesRepo = countriesRepo;
+            _regionsRepo = regionsRepo;
         }
 
         public List<CustomerDisplayViewModel> GetCustomers()
