@@ -29,7 +29,10 @@ namespace RazorDrop
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
             services.AddDbContext<RazorDropContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("RazorDropContext")));
+               options.UseSqlServer(Configuration.GetConnectionString("RazorDropContext")));
+            services.AddScoped<IRegionsRepository, RegionsRepository>();
+            services.AddScoped<ICountriesRepository, CountriesRepository>();
+            services.AddScoped<ICustomersRepository, CustomersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
