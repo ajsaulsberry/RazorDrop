@@ -54,16 +54,13 @@ namespace RazorDrop.Data
             return null;
         }
 
-
         public CustomerEditViewModel CreateCustomer()
         {
-            var cRepo = new CountriesRepository(_context);
-            var rRepo = new RegionsRepository(_context);
             var customer = new CustomerEditViewModel()
             {
                 CustomerId = Guid.NewGuid().ToString(),
-                Countries = cRepo.GetCountries(),
-                Regions = rRepo.GetRegions()
+                Countries = _countriesRepo.GetCountries(),
+                Regions = _regionsRepo.GetRegions()
             };
             return customer;
         }
