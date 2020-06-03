@@ -5,7 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RazorDrop.Data
 {
-    public class CountriesRepository
+    public interface ICountriesRepository
+    {
+        public IEnumerable<SelectListItem> GetCountries();
+    }
+    public class CountriesRepository : ICountriesRepository
     {
         private readonly RazorDropContext _context;
         public CountriesRepository(RazorDropContext context)

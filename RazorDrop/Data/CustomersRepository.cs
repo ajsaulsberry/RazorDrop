@@ -7,7 +7,14 @@ using RazorDrop.ViewModels;
 
 namespace RazorDrop.Data
 {
-    public class CustomersRepository
+    public interface ICustomersRepository
+    {
+        public List<CustomerDisplayViewModel> GetCustomers();
+        public CustomerEditViewModel CreateCustomer();
+        public bool SaveCustomer(CustomerEditViewModel customeredit);
+    }
+
+    public class CustomersRepository : ICustomersRepository
     {
         private readonly RazorDropContext _context;
         public CustomersRepository(RazorDropContext context)

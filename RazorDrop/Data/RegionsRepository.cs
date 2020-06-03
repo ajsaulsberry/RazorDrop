@@ -6,7 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RazorDrop.Data
 {
-    public class RegionsRepository
+    public interface IRegionsRepository
+    {
+        public IEnumerable<SelectListItem> GetRegions();
+        public IEnumerable<SelectListItem> GetRegions(string countryId);
+    }
+    public class RegionsRepository : IRegionsRepository
     {
         private readonly RazorDropContext _context;
 
