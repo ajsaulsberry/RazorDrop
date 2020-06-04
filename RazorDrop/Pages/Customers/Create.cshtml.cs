@@ -12,19 +12,20 @@ namespace RazorDrop.Pages.Customers
 {
     public class CreateModel : PageModel
     {
-        private readonly RazorDropContext _context;
+        private readonly ICustomersRepository _customersRepo;
+        private readonly IRegionsRepository _regionsRepo;
 
         [BindProperty(SupportsGet = true)]
         public CustomerEditViewModel CustomerEditViewModel { get; set; }
 
-        public CreateModel(RazorDropContext context)
+        public CreateModel(ICustomersRepository customersRepo, IRegionsRepository regionsRepo)
         {
-            _context = context;
+            _customersRepo = customersRepo;
+            _regionsRepo = regionsRepo;
         }
         public IActionResult OnGet()
         {
-            var repo = new CustomersRepository(_context);
-            CustomerEditViewModel = repo.CreateCustomer();
+            CustomerEditViewModel = _customersRepo.CreateCustomer();
             return Page();
         }
 
@@ -34,8 +35,7 @@ namespace RazorDrop.Pages.Customers
             {
                 if (ModelState.IsValid)
                 {
-                    var repo = new CustomersRepository(_context);
-                    bool saved = repo.SaveCustomer(CustomerEditViewModel);
+                    bool saved = _customersRepo.SaveCustomer(CustomerEditViewModel);
                     if (saved)
                     {
                         return RedirectToAction("Index");
@@ -61,9 +61,7 @@ namespace RazorDrop.Pages.Customers
             string requestBody = reader.ReadToEnd();
             if (requestBody.Length > 0)
             {
-                var repo = new RegionsRepository(_context);
-
-                IEnumerable<SelectListItem> regions = repo.GetRegions(requestBody);
+                IEnumerable<SelectListItem> regions = _regionsRepo.GetRegions(requestBody);
                 return new JsonResult(regions);
             }
             return null;

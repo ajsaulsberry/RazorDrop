@@ -9,20 +9,19 @@ namespace RazorDrop.Pages.Customers
     public class IndexModel : PageModel
     {
 
-        private readonly RazorDropContext _context;
+        private readonly ICustomersRepository _customersRepo;
 
         [BindProperty(SupportsGet = true)]
         public List<CustomerDisplayViewModel> CustomersDisplayList { get; set; }
 
-        public IndexModel(RazorDropContext context)
+        public IndexModel(ICustomersRepository customersRepo)
         {
-            _context = context;
+            _customersRepo = customersRepo;
         }
 
         public IActionResult OnGet()
         {
-            var repo = new CustomersRepository(_context);
-            CustomersDisplayList = repo.GetCustomers();
+            CustomersDisplayList = _customersRepo.GetCustomers();
             return Page();
         }
     }
