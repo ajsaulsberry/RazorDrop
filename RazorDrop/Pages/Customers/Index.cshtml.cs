@@ -12,7 +12,7 @@ namespace RazorDrop.Pages.Customers
         private readonly ICustomersRepository _customersRepo;
 
         [BindProperty(SupportsGet = true)]
-        public List<ICustomerDisplayViewModel> CustomersDisplayList { get; set; }
+        public IList<ICustomerDisplayViewModel> CustomersDisplayList { get; set; }
 
         public IndexModel(ICustomersRepository customersRepo)
         {

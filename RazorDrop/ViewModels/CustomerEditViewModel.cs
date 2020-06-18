@@ -4,7 +4,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace RazorDrop.ViewModels
 {
-    public class CustomerEditViewModel
+    public interface ICustomerEditViewModel
+    {
+        IEnumerable<SelectListItem> Countries { get; set; }
+        string CustomerId { get; set; }
+        string CustomerName { get; set; }
+        IEnumerable<SelectListItem> Regions { get; set; }
+        string SelectedCountryId { get; set; }
+        string SelectedRegionId { get; set; }
+    }
+
+    public class CustomerEditViewModel : ICustomerEditViewModel
     {
         [Display(Name = "Customer Number")]
         public string CustomerId { get; set; }

@@ -16,7 +16,7 @@ namespace RazorDrop.Pages.Customers
         private readonly IRegionsRepository _regionsRepo;
 
         [BindProperty(SupportsGet = true)]
-        public CustomerEditViewModel CustomerEditViewModel { get; set; }
+        public ICustomerEditViewModel CustomerEditViewModel { get; set; }
 
         public CreateModel(ICustomersRepository customersRepo, IRegionsRepository regionsRepo)
         {

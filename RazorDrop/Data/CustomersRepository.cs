@@ -9,9 +9,9 @@ namespace RazorDrop.Data
 {
     public interface ICustomersRepository
     {
-        public List<ICustomerDisplayViewModel> GetCustomers();
-        public CustomerEditViewModel CreateCustomer();
-        public bool SaveCustomer(CustomerEditViewModel customeredit);
+        public IList<ICustomerDisplayViewModel> GetCustomers();
+        public ICustomerEditViewModel CreateCustomer();
+        public bool SaveCustomer(ICustomerEditViewModel customeredit);
     }
 
     public class CustomersRepository : ICustomersRepository
@@ -26,7 +26,7 @@ namespace RazorDrop.Data
             _regionsRepo = regionsRepo;
         }
 
-        public List<ICustomerDisplayViewModel> GetCustomers()
+        public IList<ICustomerDisplayViewModel> GetCustomers()
         {
 
             List<Customer> customers = new List<Customer>();
@@ -54,7 +54,7 @@ namespace RazorDrop.Data
             return null;
         }
 
-        public CustomerEditViewModel CreateCustomer()
+        public ICustomerEditViewModel CreateCustomer()
         {
             var customer = new CustomerEditViewModel()
             {
@@ -65,7 +65,7 @@ namespace RazorDrop.Data
             return customer;
         }
 
-        public bool SaveCustomer(CustomerEditViewModel customeredit)
+        public bool SaveCustomer(ICustomerEditViewModel customeredit)
         {
             if (customeredit != null)
             {
