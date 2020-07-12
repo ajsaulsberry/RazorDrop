@@ -38,7 +38,7 @@ namespace RazorDrop.Pages.Customers
                     bool saved = _customersRepo.SaveCustomer(CustomerEditViewModel);
                     if (saved)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToPage("Index");
                     }
                 }
                 // Handling model state errors is beyond the scope of the demo, so just throwing an ApplicationException when the ModelState is invalid
