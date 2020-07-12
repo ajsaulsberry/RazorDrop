@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace RazorDrop.Data
 {
     public interface ICountriesRepository
     {
-        public IEnumerable<SelectListItem> GetCountries();
+        public Task<IEnumerable<SelectListItem>> GetCountries();
     }
     public class CountriesRepository : ICountriesRepository
     {
@@ -17,16 +18,16 @@ namespace RazorDrop.Data
             _context = context;
         }
 
-        public IEnumerable<SelectListItem> GetCountries()
+        public async Task<IEnumerable<SelectListItem>> GetCountries()
         {
-            List<SelectListItem> countries = _context.Countries.AsNoTracking()
+            List<SelectListItem> countries = await _context.Countries.AsNoTracking()
                 .OrderBy(n => n.CountryNameEnglish)
                 .Select(n =>
                     new SelectListItem
                     {
                         Value = n.CountryId.ToString(),
                         Text = n.CountryNameEnglish
-                    }).ToList();
+                    }).ToListAsync();
             var countrytip = new SelectListItem()
             {
                 Value = null,

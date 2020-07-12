@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RazorDrop.Models;
 using RazorDrop.ViewModels;
@@ -9,9 +10,9 @@ namespace RazorDrop.Data
 {
     public interface ICustomersRepository
     {
-        public List<CustomerDisplayViewModel> GetCustomers();
-        public CustomerEditViewModel CreateCustomer();
-        public bool SaveCustomer(CustomerEditViewModel customeredit);
+        public Task<List<CustomerDisplayViewModel>> GetCustomers();
+        public Task<CustomerEditViewModel> CreateCustomer();
+        public Task<bool> SaveCustomer(CustomerEditViewModel customeredit);
     }
 
     public class CustomersRepository : ICustomersRepository
@@ -26,14 +27,13 @@ namespace RazorDrop.Data
             _regionsRepo = regionsRepo;
         }
 
-        public List<CustomerDisplayViewModel> GetCustomers()
+        public async Task<List<CustomerDisplayViewModel>> GetCustomers()
         {
-
             List<Customer> customers = new List<Customer>();
-            customers = _context.Customers.AsNoTracking()
+            customers = await _context.Customers.AsNoTracking()
                 .Include(x => x.Country)
                 .Include(x => x.Region)
-                .ToList();
+                .ToListAsync();
 
             if (customers != null)
             {
@@ -54,18 +54,18 @@ namespace RazorDrop.Data
             return null;
         }
 
-        public CustomerEditViewModel CreateCustomer()
+        public async Task<CustomerEditViewModel> CreateCustomer()
         {
             var customer = new CustomerEditViewModel()
             {
                 CustomerId = Guid.NewGuid().ToString(),
-                Countries = _countriesRepo.GetCountries(),
+                Countries = await _countriesRepo.GetCountries(),
                 Regions = _regionsRepo.GetRegions()
             };
             return customer;
         }
 
-        public bool SaveCustomer(CustomerEditViewModel customeredit)
+        public async Task<bool> SaveCustomer(CustomerEditViewModel customeredit)
         {
             if (customeredit != null)
             {
@@ -78,15 +78,16 @@ namespace RazorDrop.Data
                         CountryId = customeredit.SelectedCountryId,
                         RegionId = customeredit.SelectedRegionId
                     };
-                    customer.Country = _context.Countries.Find(customeredit.SelectedCountryId);
-                    customer.Region = _context.Regions.Find(customeredit.SelectedRegionId);
+                    // The next two lines will execute sequentially.
+                    customer.Country = await _context.Countries.FindAsync(customeredit.SelectedCountryId);
+                    customer.Region = await _context.Regions.FindAsync(customeredit.SelectedRegionId);
 
-                    _context.Customers.Add(customer);
-                    _context.SaveChanges();
+                    await _context.Customers.AddAsync(customer);
+                    await _context.SaveChangesAsync();
                     return true;
                 }
             }
-            // Return false if customeredit == null or CustomerID is not a guid
+            // Return false if customeredit == null or CustomerID is not a Guid.
             return false;
         }
     }

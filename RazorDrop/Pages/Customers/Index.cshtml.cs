@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorDrop.Data;
@@ -19,9 +20,9 @@ namespace RazorDrop.Pages.Customers
             _customersRepo = customersRepo;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            CustomersDisplayList = _customersRepo.GetCustomers();
+            CustomersDisplayList = await _customersRepo.GetCustomers();
             return Page();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,22 +24,22 @@ namespace RazorDrop.Pages.Customers
             _customersRepo = customersRepo;
             _regionsRepo = regionsRepo;
         }
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            CustomerEditViewModel = _customersRepo.CreateCustomer();
+            CustomerEditViewModel = await _customersRepo.CreateCustomer();
             return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    bool saved = _customersRepo.SaveCustomer(CustomerEditViewModel);
+                    bool saved = await _customersRepo.SaveCustomer(CustomerEditViewModel);
                     if (saved)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToPage("Index");
                     }
                 }
                 // Handling model state errors is beyond the scope of the demo, so just throwing an ApplicationException when the ModelState is invalid
@@ -52,16 +53,16 @@ namespace RazorDrop.Pages.Customers
             }
         }
 
-        public IActionResult OnPostRegions()
+        public async Task<IActionResult> OnPostRegionsAsync()
         {
             MemoryStream stream = new MemoryStream();
-            Request.Body.CopyToAsync(stream);
+            await Request.Body.CopyToAsync(stream);
             stream.Position = 0;
             using StreamReader reader = new StreamReader(stream);
             string requestBody = reader.ReadToEnd();
             if (requestBody.Length > 0)
             {
-                IEnumerable<SelectListItem> regions = _regionsRepo.GetRegions(requestBody);
+                IEnumerable<SelectListItem> regions = await _regionsRepo.GetRegions(requestBody);
                 return new JsonResult(regions);
             }
             return null;
